@@ -1,8 +1,6 @@
 # TaskBoard
 
-<!-- To jest szkielet README. W zadaniu TB-1 uzupełnij każdą sekcję i usuń te komentarze. -->
-
-Krótki opis aplikacji (2–3 zdania): czym jest TaskBoard i co można w nim zrobić.
+TaskBoard to nowoczesna, intuicyjna aplikacja typu Kanban stworzona z myślą o efektywnym zarządzaniu projektami i codziennymi zadaniami. Narzędzie pozwala na organizowanie pracy w postaci elastycznych tablic, monitorowanie postępów za pomocą statusów oraz płynne przesuwanie zadań między etapami metodą „przeciągnij i upuść” (drag-and-drop). Dzięki czytelnemu interfejsowi oraz funkcjom współpracy w czasie rzeczywistym, TaskBoard doskonale sprawdza się zarówno w pracy zespołowych projektów, jak i przy planowaniu osobistych celów
 
 ## Technologie
 
