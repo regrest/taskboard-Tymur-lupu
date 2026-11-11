@@ -1,0 +1,794 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7a8b-9c0d-e1f2a3b4c5d6",
+    "name": "TaskBoard - TB-2 część 2",
+    "description": "Kolekcja do testowania API zadań i użytkowników (TB-2, część 2), z przypadkami 400 i 404. Uruchamiaj w kolejności (Collection Runner): zadanie z POST 201 jest używane przez GET, PUT i DELETE.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "taskId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Użytkownicy",
+      "item": [
+        {
+          "name": "GET Lista użytkowników (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Brak passwordHash', function () { pm.response.json().forEach(function (u) { pm.expect(u).to.not.have.property('passwordHash'); }); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            },
+            "description": "Zwraca id, login, firstName, lastName. Pole passwordHash nie może się pojawić."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Zadania",
+      "item": [
+        {
+          "name": "GET Zadania tablicy (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Brak usuniętych zadań', function () { pm.response.json().forEach(function (t) { pm.expect(t.id).to.not.be.oneOf([9, 10]); }); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/boards/1/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "boards",
+                "1",
+                "tasks"
+              ]
+            },
+            "description": "Aktywne zadania istniejącej tablicy."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Zadania tablicy (404 brak tablicy)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Odpowiedź zawiera pole error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/boards/9999/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "boards",
+                "9999",
+                "tasks"
+              ]
+            },
+            "description": "Tablica nie istnieje albo jest usunięta."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Nowe zadanie (201)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Odpowiedź zawiera id', function () { pm.expect(pm.response.json()).to.have.property('id'); });",
+                  "pm.collectionVariables.set('taskId', pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks"
+              ]
+            },
+            "description": "Poprawne zadanie. Test zapisuje id w zmiennej kolekcji taskId, której używają kolejne żądania.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Przykładowe zadanie backendu\",\n  \"description\": \"Opis testowego zadania\",\n  \"status\": \"todo\",\n  \"priority\": \"medium\",\n  \"deadline\": \"2026-12-31\",\n  \"boardId\": 1,\n  \"assigneeId\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST Nowe zadanie (400 pusty tytuł)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Odpowiedź zawiera pole error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks"
+              ]
+            },
+            "description": "Tytuł po obcięciu spacji ma 0 znaków.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"  \",\n  \"description\": \"Opis testowego zadania\",\n  \"status\": \"todo\",\n  \"priority\": \"medium\",\n  \"deadline\": \"2026-12-31\",\n  \"boardId\": 1,\n  \"assigneeId\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST Nowe zadanie (400 za krótki tytuł)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Odpowiedź zawiera pole error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks"
+              ]
+            },
+            "description": "Tytuł krótszy niż 3 znaki.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"ab\",\n  \"description\": \"Opis testowego zadania\",\n  \"status\": \"todo\",\n  \"priority\": \"medium\",\n  \"deadline\": \"2026-12-31\",\n  \"boardId\": 1,\n  \"assigneeId\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST Nowe zadanie (400 zły status)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Odpowiedź zawiera pole error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks"
+              ]
+            },
+            "description": "Status spoza listy todo / in_progress / done.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Przykładowe zadanie backendu\",\n  \"description\": \"Opis testowego zadania\",\n  \"status\": \"nieprawidlowy\",\n  \"priority\": \"medium\",\n  \"deadline\": \"2026-12-31\",\n  \"boardId\": 1,\n  \"assigneeId\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST Nowe zadanie (400 zły priorytet)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Odpowiedź zawiera pole error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks"
+              ]
+            },
+            "description": "Priorytet spoza listy low / medium / high.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Przykładowe zadanie backendu\",\n  \"description\": \"Opis testowego zadania\",\n  \"status\": \"todo\",\n  \"priority\": \"extreme\",\n  \"deadline\": \"2026-12-31\",\n  \"boardId\": 1,\n  \"assigneeId\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST Nowe zadanie (400 zła data)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Odpowiedź zawiera pole error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks"
+              ]
+            },
+            "description": "Termin w formacie innym niż RRRR-MM-DD.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Przykładowe zadanie backendu\",\n  \"description\": \"Opis testowego zadania\",\n  \"status\": \"todo\",\n  \"priority\": \"medium\",\n  \"deadline\": \"31-12-2026\",\n  \"boardId\": 1,\n  \"assigneeId\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST Nowe zadanie (400 nieistniejąca tablica)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Odpowiedź zawiera pole error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks"
+              ]
+            },
+            "description": "Tablica o takim id nie istnieje.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Przykładowe zadanie backendu\",\n  \"description\": \"Opis testowego zadania\",\n  \"status\": \"todo\",\n  \"priority\": \"medium\",\n  \"deadline\": \"2026-12-31\",\n  \"boardId\": 9999,\n  \"assigneeId\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST Nowe zadanie (400 nieistniejąca osoba)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Odpowiedź zawiera pole error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks"
+              ]
+            },
+            "description": "Użytkownik o takim id nie istnieje.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Przykładowe zadanie backendu\",\n  \"description\": \"Opis testowego zadania\",\n  \"status\": \"todo\",\n  \"priority\": \"medium\",\n  \"deadline\": \"2026-12-31\",\n  \"boardId\": 1,\n  \"assigneeId\": 9999\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET Szczegóły zadania (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/{{taskId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "{{taskId}}"
+              ]
+            },
+            "description": "Zadanie utworzone wcześniej żądaniem POST (201)."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Szczegóły zadania (404 brak zadania)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Odpowiedź zawiera pole error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/9999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "9999"
+              ]
+            },
+            "description": "Zadanie nie istnieje."
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Zmiana zadania (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/{{taskId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "{{taskId}}"
+              ]
+            },
+            "description": "Zmiana wszystkich pól zadania, w tym statusu.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Zaktualizowany tytuł zadania\",\n  \"description\": \"Nowy opis\",\n  \"status\": \"in_progress\",\n  \"priority\": \"high\",\n  \"deadline\": \"2026-11-20\",\n  \"assigneeId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Zmiana zadania (400 zły status)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Odpowiedź zawiera pole error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/{{taskId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "{{taskId}}"
+              ]
+            },
+            "description": "PUT waliduje pola tak samo jak POST.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Zaktualizowany tytuł zadania\",\n  \"status\": \"zrobione\",\n  \"priority\": \"high\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Zmiana zadania (404 brak zadania)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Odpowiedź zawiera pole error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/9999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "9999"
+              ]
+            },
+            "description": "Poprawne dane, ale zadanie nie istnieje.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Aktualizacja widmo\",\n  \"status\": \"todo\",\n  \"priority\": \"low\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Usunięcie zadania (204 soft delete)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 204', function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/{{taskId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "{{taskId}}"
+              ]
+            },
+            "description": "Ustawia isDeleted = 1 i deletedAt. Rekord zostaje w bazie."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Zadanie po usunięciu (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Odpowiedź zawiera pole error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/{{taskId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "{{taskId}}"
+              ]
+            },
+            "description": "Usunięte zadanie nie jest już zwracane przez API."
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Usunięcie zadania (404 brak zadania)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Kod odpowiedzi 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Odpowiedź zawiera pole error', function () { pm.expect(pm.response.json()).to.have.property('error'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/tasks/9999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "tasks",
+                "9999"
+              ]
+            },
+            "description": "Zadanie nie istnieje."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
