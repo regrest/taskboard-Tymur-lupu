@@ -1,36 +1,29 @@
 # TaskBoard
 
-TaskBoard to aplikacja webowa do zarządzania zadaniami zespołu w stylu tablicy kanban. Użytkownik tworzy tablice, dodaje zadania z priorytetem, terminem i przypisaną osobą oraz przenosi je między kolumnami „Do zrobienia”, „W trakcie” i „Gotowe”.
+<!-- To jest szkielet README. W zadaniu TB-1 uzupełnij każdą sekcję i usuń te komentarze. -->
 
 Krótki opis aplikacji (2–3 zdania): czym jest TaskBoard i co można w nim zrobić.
 
 ## Technologie
 
-Frontend: HTML, CSS, JavaScript, Bootstrap.
-Backend: Node.js, Express 5, mysql2, dotenv.
-Baza danych: MariaDB 10.11 (zgodna z MySQL).
-Narzędzia: Git, GitHub Actions, Postman, VS Code.
+<!-- Wypisz technologie użyte w projekcie (frontend, backend, baza danych, narzędzia). -->
 
 ## Wymagane środowisko
 
-Node.js 20 lub nowszy, MariaDB 10.11 lub MySQL 8 (np. XAMPP) i Git.
+<!-- Narzędzia i ich wersje potrzebne do uruchomienia projektu. -->
 
 ## Uruchomienie
 
-| Folder | Za co odpowiada |
-| --- | --- |
-| `frontend/` | Interfejs użytkownika: widoki, style i skrypty. |
-| `backend/` | Serwer Express i REST API (`boards`, `tasks`, `users`). |
-| `database/` | Skrypty bazy: struktura, dane testowe, zapytania, konta, kopie. |
-| `docs/` | Dokumentacja, opisy zadań i kolekcja Postman. |
+<!-- Instrukcja krok po kroku. Na razie szkic – rozbudujesz ją w kolejnych tygodniach. -->
 
 ## Struktura projektu
 
-Folder	Za co odpowiada
-frontend/	Interfejs użytkownika: widoki, style i skrypty.
-backend/	Serwer Express i REST API (boards, tasks, users).
-database/	Skrypty bazy: struktura, dane testowe, zapytania, konta, kopie.
-docs/	Dokumentacja, opisy zadań i kolekcja Postman.
+| Folder | Za co odpowiada |
+| --- | --- |
+| `frontend/` | |
+| `backend/` | |
+| `database/` | |
+| `docs/` | |
 
 ## Materiały
 
@@ -38,4 +31,4 @@ Pliki potrzebne podczas praktyk są w folderze [materialy](materialy/README.md).
 
 ## Autor
 
-Tymur lupu, 3Tp.
+Imię i nazwisko, klasa.
