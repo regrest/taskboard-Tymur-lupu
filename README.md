@@ -13,13 +13,16 @@ Narzędzia: Git, GitHub Actions, Postman, VS Code.
 
 ## Wymagane środowisko
 
-Node.js 20 lub nowszy, MariaDB 10.11 lub MySQL 8 (np. XAMPP) i Git. 
+Node.js 20 lub nowszy, MariaDB 10.11 lub MySQL 8 (np. XAMPP) i Git.
 
 ## Uruchomienie
 
-Odtwórz bazę danych (sekcja „Baza danych”).
-Skopiuj .env.example jako .env w głównym folderze i wpisz hasło do bazy.
-W folderze backend/ wykonaj npm install, a potem npm start.
+| Folder | Za co odpowiada |
+| --- | --- |
+| `frontend/` | Interfejs użytkownika: widoki, style i skrypty. |
+| `backend/` | Serwer Express i REST API (`boards`, `tasks`, `users`). |
+| `database/` | Skrypty bazy: struktura, dane testowe, zapytania, konta, kopie. |
+| `docs/` | Dokumentacja, opisy zadań i kolekcja Postman. |
 
 ## Struktura projektu
 
@@ -35,4 +38,4 @@ Pliki potrzebne podczas praktyk są w folderze [materialy](materialy/README.md).
 
 ## Autor
 
-Tymur lupu, klasa.
+Tymur lupu, 3Tp.
