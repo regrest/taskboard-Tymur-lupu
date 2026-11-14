@@ -1,5 +1,8 @@
 // Ćwiczenie z debuggerem (poniedziałek 3).
-// Ten skrypt miał 5 błędów. Przy każdej poprawce jest komentarz, co było nie tak.
+// Ten skrypt ma 5 błędów. Otwórz index.html w przeglądarce (np. przez Live Server),
+// włącz DevTools (F12) i znajdź błędy: zakładka Console pokazuje komunikaty,
+// a w zakładce Sources ustawisz breakpoint i podejrzysz wartości zmiennych.
+// Przy każdej poprawce dopisz komentarz, co było nie tak.
 
 const zadania = [
   { tytul: 'Struktura repozytorium', status: 'done' },
@@ -11,26 +14,17 @@ const zadania = [
 
 function policzWykonane(lista) {
   let licznik = 0;
-  // Błąd 1: było i <= lista.length – pętla wychodziła poza tablicę,
-  // lista[5] to undefined, więc odczyt .status rzucał TypeError.
-  for (let i = 0; i < lista.length; i++) {
-    // Błąd 2: było = (przypisanie) zamiast === (porównanie),
-    // przez co warunek był zawsze prawdziwy, a status nadpisywany.
-    if (lista[i].status === 'done') {
+  for (let i = 0; i <= lista.length; i++) {
+    if (lista[i].status = 'done') {
       licznik++;
     }
   }
-  // Błąd 3: brakowało return – funkcja zwracała undefined, wynik to NaN.
-  return licznik;
 }
 
 function pokazPodsumowanie() {
-  // Błąd 4: było policzWykonane(zadanie) – literówka w nazwie zmiennej,
-  // poprawna nazwa to zadania (ReferenceError).
-  const wykonane = policzWykonane(zadania);
+  const wykonane = policzWykonane(zadanie);
   const procent = Math.round((wykonane / zadania.length) * 100);
   document.getElementById('wynik').textContent = `Wykonane: ${wykonane} z ${zadania.length} (${procent}%)`;
 }
 
-// Błąd 5: było 'clik' – literówka w nazwie zdarzenia, przycisk nic nie robił.
-document.getElementById('policz').addEventListener('click', pokazPodsumowanie);
+document.getElementById('policz').addEventListener('clik', pokazPodsumowanie);
