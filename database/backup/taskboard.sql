@@ -1,11 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 10, 2026 at 06:08 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Хост: 127.0.0.1
+-- Время создания: Ноя 14 2026 г., 20:48
+-- Версия сервера: 10.11.16-MariaDB
+-- Версия PHP: 8.5.12
+
+DROP DATABASE IF EXISTS `taskboard`;
+CREATE DATABASE `taskboard` CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci;
+USE `taskboard`;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,28 +22,32 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `taskboard`
+-- Baza danych: `taskboard`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `boards`
+-- Struktura tabeli dla tabeli `boards`
 --
 
-CREATE TABLE `boards` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `boards`;
+CREATE TABLE IF NOT EXISTS `boards` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(80) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `ownerId` int(10) UNSIGNED NOT NULL,
   `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
   `isDeleted` tinyint(1) NOT NULL DEFAULT 0,
   `deletedAt` datetime DEFAULT NULL,
-  `deletedById` int(10) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+  `deletedById` int(10) UNSIGNED DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ownerId` (`ownerId`),
+  KEY `deletedById` (`deletedById`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
 --
--- Dumping data for table `boards`
+-- Zrzut danych tabeli `boards`
 --
 
 INSERT INTO `boards` (`id`, `name`, `description`, `ownerId`, `createdAt`, `isDeleted`, `deletedAt`, `deletedById`) VALUES
@@ -49,11 +57,12 @@ INSERT INTO `boards` (`id`, `name`, `description`, `ownerId`, `createdAt`, `isDe
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tasks`
+-- Struktura tabeli dla tabeli `tasks`
 --
 
-CREATE TABLE `tasks` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `tasks`;
+CREATE TABLE IF NOT EXISTS `tasks` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `title` varchar(100) NOT NULL,
   `description` text DEFAULT NULL,
   `status` enum('todo','in_progress','done') NOT NULL DEFAULT 'todo',
@@ -64,11 +73,15 @@ CREATE TABLE `tasks` (
   `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
   `isDeleted` tinyint(1) NOT NULL DEFAULT 0,
   `deletedAt` datetime DEFAULT NULL,
-  `deletedById` int(10) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+  `deletedById` int(10) UNSIGNED DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `boardId` (`boardId`),
+  KEY `assigneeId` (`assigneeId`),
+  KEY `deletedById` (`deletedById`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
 --
--- Dumping data for table `tasks`
+-- Zrzut danych tabeli `tasks`
 --
 
 INSERT INTO `tasks` (`id`, `title`, `description`, `status`, `priority`, `deadline`, `boardId`, `assigneeId`, `createdAt`, `isDeleted`, `deletedAt`, `deletedById`) VALUES
@@ -86,20 +99,23 @@ INSERT INTO `tasks` (`id`, `title`, `description`, `status`, `priority`, `deadli
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Struktura tabeli dla tabeli `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `login` varchar(30) NOT NULL,
   `passwordHash` char(60) NOT NULL,
   `firstName` varchar(50) NOT NULL,
   `lastName` varchar(50) NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `login` (`login`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
 --
--- Dumping data for table `users`
+-- Zrzut danych tabeli `users`
 --
 
 INSERT INTO `users` (`id`, `login`, `passwordHash`, `firstName`, `lastName`, `createdAt`) VALUES
@@ -110,68 +126,18 @@ INSERT INTO `users` (`id`, `login`, `passwordHash`, `firstName`, `lastName`, `cr
 (5, 'kasia.lewandowska', '$2a$10$qCgFwKm4Qiu60z3cTqCvz.DZUvPNVnkJQjMagc4wtx24LiYjsF./y', 'Kasia', 'Lewandowska', '2026-11-10 17:24:55');
 
 --
--- Indexes for dumped tables
+-- Ograniczenia dla zrzutów tabel
 --
 
 --
--- Indexes for table `boards`
---
-ALTER TABLE `boards`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `ownerId` (`ownerId`),
-  ADD KEY `deletedById` (`deletedById`);
-
---
--- Indexes for table `tasks`
---
-ALTER TABLE `tasks`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `boardId` (`boardId`),
-  ADD KEY `assigneeId` (`assigneeId`),
-  ADD KEY `deletedById` (`deletedById`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `login` (`login`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `boards`
---
-ALTER TABLE `boards`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `tasks`
---
-ALTER TABLE `tasks`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `boards`
+-- Ograniczenia dla tabeli `boards`
 --
 ALTER TABLE `boards`
   ADD CONSTRAINT `boards_ibfk_1` FOREIGN KEY (`ownerId`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `boards_ibfk_2` FOREIGN KEY (`deletedById`) REFERENCES `users` (`id`);
 
 --
--- Constraints for table `tasks`
+-- Ograniczenia dla tabeli `tasks`
 --
 ALTER TABLE `tasks`
   ADD CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`boardId`) REFERENCES `boards` (`id`) ON DELETE CASCADE,
