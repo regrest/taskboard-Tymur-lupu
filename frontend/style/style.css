@@ -1,0 +1,132 @@
+body {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+.navbar-custom {
+  background-color: #0e2a30;
+  min-height: 54px;
+}
+
+.btn-teal {
+  background-color: #136f63;
+  border-color: #136f63;
+  color: #fff;
+}
+
+.btn-teal:hover,
+.btn-teal:focus,
+.btn-teal:active {
+  background-color: #0f594f !important;
+  border-color: #0f594f !important;
+  color: #fff !important;
+}
+
+.text-teal {
+  color: #136f63;
+  text-decoration: none;
+}
+
+.text-teal:hover {
+  text-decoration: underline;
+}
+
+/* Zakładki Logowanie / Rejestracja */
+.nav-tabs .nav-link {
+  color: #136f63;
+}
+
+.nav-tabs .nav-link.active {
+  color: #212529;
+  font-weight: 500;
+}
+
+/* Karty tablic (widok Tablice) */
+.board-card {
+  border: 1px solid #dee2e6;
+  border-top: 3px solid #136f63;
+  border-radius: 6px;
+  background: #fff;
+}
+
+/* Kolumny Kanban */
+.kanban-col {
+  border-radius: 8px;
+  padding: 16px;
+  min-height: 240px;
+}
+
+.col-todo {
+  background-color: #edf2f7;
+}
+
+.col-inprogress {
+  background-color: #fdf6e9;
+}
+
+.col-done {
+  background-color: #eaf7f0;
+}
+
+.col-counter {
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #212529;
+}
+
+/* Karty zadań */
+.task-card {
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 14px;
+  border-left: 4px solid #6c757d;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.task-card.status-do_zrobienia {
+  border-left-color: #6c757d;
+}
+
+.task-card.status-w_trakcie {
+  border-left-color: #d9822b;
+}
+
+.task-card.status-gotowe {
+  border-left-color: #198754;
+}
+
+/* Etykiety priorytetów */
+.badge-prio {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.badge-prio-wysoki {
+  background-color: #fde8e8;
+  color: #b91c1c;
+}
+
+.badge-prio-sredni {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.badge-prio-niski {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+/* Na wąskich ekranach przycisk „Dodaj zadanie” pod opisem (jak na 6. screenie) */
+@media (max-width: 767.98px) {
+  #openNewTaskModalBtn {
+    align-self: flex-start;
+  }
+}
