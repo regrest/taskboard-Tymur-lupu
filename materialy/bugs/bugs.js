@@ -14,17 +14,23 @@ const zadania = [
 
 function policzWykonane(lista) {
   let licznik = 0;
-  for (let i = 0; i <= lista.length; i++) {
-    if (lista[i].status = 'done') {
+  // POPRAWKA 1: Pętla wychodziła za tablicę przez <=, zmieniłem na zwykłe <
+  for (let i = 0; i < lista.length; i++) {
+    // POPRAWKA 2: Było jedno = zamiast === przez co nadpisywało status
+    if (lista[i].status === 'done') {
       licznik++;
     }
   }
+  // POPRAWKA 3: Funkcja nic nie zwracała, dodałem return licznik
+  return licznik;
 }
 
 function pokazPodsumowanie() {
-  const wykonane = policzWykonane(zadanie);
+  // POPRAWKA 4: Literówka w nazwie zmiennej, było zadanie zamiast zadania
+  const wykonane = policzWykonane(zadania);
   const procent = Math.round((wykonane / zadania.length) * 100);
   document.getElementById('wynik').textContent = `Wykonane: ${wykonane} z ${zadania.length} (${procent}%)`;
 }
 
-document.getElementById('policz').addEventListener('clik', pokazPodsumowanie);
+// POPRAPWKA 5: Błąd w nazwie zdarzenia, było 'clik' zamiast 'click'
+document.getElementById('policz').addEventListener('click', pokazPodsumowanie);
