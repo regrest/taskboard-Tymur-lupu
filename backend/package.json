@@ -1,19 +1,24 @@
 {
-  "name": "backend",
+  "name": "taskboard-tymur-lupu",
   "version": "1.0.0",
-  "description": "W tym katalogu znajduje się logika serwerowa oraz interfejs API (REST API). Warstwa ta odpowiada za przetwarzanie żądań z klienta frontendowego, autoryzację użytkowników oraz logikę biznesową aplikacji. Obsługuje również komunikację z bazą danych.",
+  "description": "<!-- To jest szkielet README. W zadaniu TB-1 uzupełnij każdą sekcję i usuń te komentarze. -->",
   "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/regrest/taskboard-Tymur-lupu.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "dependencies": {
-    "dotenv": "^18.0.10",
-    "express": "^5.3.0",
-    "mysql2": "^3.24.6"
-  }
+  "bugs": {
+    "url": "https://github.com/regrest/taskboard-Tymur-lupu/issues"
+  },
+  "homepage": "https://github.com/regrest/taskboard-Tymur-lupu#readme"
 }
