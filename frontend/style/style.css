@@ -1,132 +1,300 @@
+:root {
+  --tb-header-bg: #11161d;
+  --tb-page-bg: #f4f6f8;
+  --tb-surface: #ffffff;
+  --tb-border: #dee2e6;
+  --tb-text: #182026;
+  --tb-muted: #6c757d;
+  --tb-teal: #117a6b;
+  --tb-teal-hover: #0d5f53;
+  --tb-col-todo: #edf1f5;
+  --tb-col-progress: #fbf2d6;
+  --tb-col-done: #e4f3ea;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  background-color: #f8f9fa;
-  color: #212529;
+  margin: 0;
+  background-color: var(--tb-page-bg);
+  color: var(--tb-text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  min-height: 100vh;
 }
 
-.navbar-custom {
-  background-color: #0e2a30;
-  min-height: 54px;
+/* Шапка */
+.navbar-tb {
+  background-color: var(--tb-header-bg);
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
 }
 
-.btn-teal {
-  background-color: #136f63;
-  border-color: #136f63;
-  color: #fff;
+.navbar-tb .navbar-brand {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
 }
 
-.btn-teal:hover,
-.btn-teal:focus,
-.btn-teal:active {
-  background-color: #0f594f !important;
-  border-color: #0f594f !important;
-  color: #fff !important;
+.navbar-tb .btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #ffffff;
+  font-weight: 500;
+  padding: 0.35rem 0.85rem;
 }
 
-.text-teal {
-  color: #136f63;
-  text-decoration: none;
+.navbar-tb .btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: #ffffff;
+  color: #ffffff;
 }
 
-.text-teal:hover {
-  text-decoration: underline;
-}
-
-/* Zakładki Logowanie / Rejestracja */
-.nav-tabs .nav-link {
-  color: #136f63;
-}
-
-.nav-tabs .nav-link.active {
-  color: #212529;
+/* Основная зеленая кнопка */
+.btn-accent {
+  background-color: var(--tb-teal);
+  border-color: var(--tb-teal);
+  color: #ffffff;
   font-weight: 500;
 }
 
-/* Karty tablic (widok Tablice) */
-.board-card {
-  border: 1px solid #dee2e6;
-  border-top: 3px solid #136f63;
-  border-radius: 6px;
-  background: #fff;
+.btn-accent:hover,
+.btn-accent:focus,
+.btn-accent:active {
+  background-color: var(--tb-teal-hover);
+  border-color: var(--tb-teal-hover);
+  color: #ffffff;
 }
 
-/* Kolumny Kanban */
+/* Экран входа и регистрации */
+.auth-wrapper {
+  max-width: 560px;
+  margin: 44px auto 24px;
+}
+
+.auth-wrapper h1 {
+  font-size: 2.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--tb-text);
+}
+
+.auth-card {
+  background-color: var(--tb-surface);
+  border: 1px solid var(--tb-border);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(17, 24, 39, 0.05);
+  overflow: hidden;
+}
+
+.auth-card .nav-tabs {
+  border-bottom: 1px solid var(--tb-border);
+  background-color: var(--tb-surface);
+}
+
+.auth-card .nav-tabs .nav-link {
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  color: #212529;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.85rem 1.15rem;
+  margin-bottom: -1px;
+}
+
+.auth-card .nav-tabs .nav-link:hover {
+  color: var(--tb-teal);
+}
+
+.auth-card .nav-tabs .nav-link.active {
+  color: #111827;
+  font-weight: 600;
+  border-bottom-color: var(--tb-teal);
+  background-color: transparent;
+}
+
+.form-label {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 0.35rem;
+}
+
+.form-control,
+.form-select {
+  border-color: #ced4da;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #5ea89d;
+  box-shadow: 0 0 0 0.2rem rgba(17, 122, 107, 0.16);
+}
+
+.form-control.is-invalid,
+.was-validated .form-control:invalid {
+  border-color: #dc3545;
+  padding-right: 2.35rem;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.65rem center;
+  background-size: 1.05rem 1.05rem;
+}
+
+.invalid-feedback {
+  font-size: 0.82rem;
+  color: #dc3545;
+}
+
+/* Список досок */
+.board-card {
+  background-color: var(--tb-surface);
+  border: 1px solid var(--tb-border);
+  border-top: 3px solid var(--tb-teal);
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(17, 24, 39, 0.05);
+}
+
+.board-card h5 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--tb-text);
+}
+
+/* Хлебные крошки и заголовки доски */
+#boardTitleHeading {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--tb-text);
+}
+
+#boardDescHeading {
+  color: var(--tb-muted);
+  font-size: 0.98rem;
+}
+
+/* Колонки Канбан-доски */
 .kanban-col {
   border-radius: 8px;
   padding: 16px;
-  min-height: 240px;
+  min-height: 420px;
 }
 
 .col-todo {
-  background-color: #edf2f7;
+  background-color: var(--tb-col-todo);
 }
 
-.col-inprogress {
-  background-color: #fdf6e9;
+.col-progress {
+  background-color: var(--tb-col-progress);
 }
 
 .col-done {
-  background-color: #eaf7f0;
+  background-color: var(--tb-col-done);
 }
 
-.col-counter {
-  background-color: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: 999px;
-  padding: 2px 9px;
-  font-size: 0.78rem;
+.kanban-col h5 {
+  font-size: 1.15rem;
   font-weight: 700;
-  color: #212529;
+  color: var(--tb-text);
 }
 
-/* Karty zadań */
-.task-card {
-  background: #fff;
-  border: 1px solid #dee2e6;
+.col-count {
+  background-color: var(--tb-surface);
+  color: #1f2937;
   border-radius: 6px;
-  padding: 14px;
-  border-left: 4px solid #6c757d;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  padding: 2px 9px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
-.task-card.status-do_zrobienia {
+/* Карточки задач */
+.task-card {
+  background-color: var(--tb-surface);
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid #6c757d;
+  border-radius: 6px;
+  padding: 15px 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 1px 3px rgba(17, 24, 39, 0.05);
+}
+
+.task-card:last-child {
+  margin-bottom: 0;
+}
+
+.task-card.prio-high {
+  border-left-color: #dc3545;
+}
+
+.task-card.prio-medium {
+  border-left-color: #d99b00;
+}
+
+.task-card.prio-low {
   border-left-color: #6c757d;
 }
 
-.task-card.status-w_trakcie {
-  border-left-color: #d9822b;
-}
-
-.task-card.status-gotowe {
-  border-left-color: #198754;
-}
-
-/* Etykiety priorytetów */
-.badge-prio {
-  display: inline-block;
-  padding: 3px 8px;
-  border-radius: 4px;
+.badge-prio-high {
+  background-color: #f8d7da;
+  color: #9b1c26;
+  font-weight: 600;
   font-size: 0.78rem;
+  padding: 0.35em 0.55em;
+  border-radius: 5px;
+}
+
+.badge-prio-medium {
+  background-color: #fff3cd;
+  color: #7c5800;
+  font-weight: 600;
+  font-size: 0.78rem;
+  padding: 0.35em 0.55em;
+  border-radius: 5px;
+}
+
+.badge-prio-low {
+  background-color: #e9ecef;
+  color: #343a40;
+  font-weight: 600;
+  font-size: 0.78rem;
+  padding: 0.35em 0.55em;
+  border-radius: 5px;
+}
+
+.overdue-text {
+  color: #dc3545;
   font-weight: 600;
 }
 
-.badge-prio-wysoki {
-  background-color: #fde8e8;
-  color: #b91c1c;
+.task-card .btn-sm {
+  font-size: 0.84rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 5px;
 }
 
-.badge-prio-sredni {
-  background-color: #fef3c7;
-  color: #92400e;
+/* Модальные окна */
+.modal-content {
+  border: 1px solid var(--tb-border);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
 }
 
-.badge-prio-niski {
-  background-color: #e5e7eb;
-  color: #374151;
+.modal-header {
+  border-bottom: 1px solid #e9ecef;
+  padding: 1rem 1.25rem;
 }
 
-/* Na wąskich ekranach przycisk „Dodaj zadanie” pod opisem (jak na 6. screenie) */
-@media (max-width: 767.98px) {
-  #openNewTaskModalBtn {
-    align-self: flex-start;
-  }
+.modal-body {
+  padding: 1.25rem;
+}
+
+.modal-footer {
+  border-top: 1px solid #e9ecef;
+  padding: 0.85rem 1.25rem;
 }
